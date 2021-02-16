@@ -17,7 +17,7 @@ class ForgotPasswordDisplay extends StatefulWidget {
 }
 
 class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
-  final TextEditingController _usernameController = TextEditingController();
+  final _usernameController = TextEditingController();
 
   bool _sending = false;
 

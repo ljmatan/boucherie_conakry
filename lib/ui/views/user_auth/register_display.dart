@@ -12,10 +12,10 @@ class RegisterDisplay extends StatefulWidget {
 }
 
 class _RegisterDisplayState extends State<RegisterDisplay> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 

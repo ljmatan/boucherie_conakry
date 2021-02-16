@@ -12,8 +12,8 @@ class LoginDisplay extends StatefulWidget {
 }
 
 class _LoginDisplayState extends State<LoginDisplay> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

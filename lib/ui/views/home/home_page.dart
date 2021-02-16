@@ -1,3 +1,4 @@
+import 'package:boucherie_conakry/ui/views/cart/cart_page.dart';
 import 'package:boucherie_conakry/ui/views/home/auth_dialog/auth_dialog.dart';
 import 'package:boucherie_conakry/ui/views/home/map_display.dart';
 
@@ -52,25 +53,30 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, items) => Stack(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.shopping_cart),
-                      onPressed: () {},
+                      icon: Icon(Icons.shopping_cart, color: Colors.white),
+                      onPressed: items.data != 0
+                          ? () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => CartPage()))
+                          : null,
                     ),
                     if (items.data != 0)
                       Positioned(
                         right: 6,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Text(
-                              items.data.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 12,
+                        child: IgnorePointer(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: Text(
+                                items.data.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),

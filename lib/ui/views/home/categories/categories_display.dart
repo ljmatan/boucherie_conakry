@@ -1,4 +1,4 @@
-import 'package:boucherie_conakry/other/food_icons.dart';
+import 'package:boucherie_conakry/other/custom_icons.dart';
 import 'package:boucherie_conakry/ui/views/butchers/butchers_page.dart';
 import 'package:boucherie_conakry/ui/views/home/categories/category_entry.dart';
 import 'package:boucherie_conakry/ui/views/seafood/seafood_page.dart';
@@ -33,22 +33,22 @@ class CategoriesDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CategoryEntry(
-                icon: FoodIcons.chicken_leg,
+                icon: CustomIcons.chicken_leg,
                 label: 'Boucherie',
                 route: ButchersPage(),
               ),
               CategoryEntry(
-                icon: FoodIcons.fish,
+                icon: CustomIcons.fish,
                 label: 'Poissonnerie',
                 route: SeafoodPage(),
               ),
               CategoryEntry(
-                icon: FoodIcons.glass_cheers,
+                icon: CustomIcons.glass_cheers,
                 label: 'Vins',
                 route: WinesPage(),
               ),
               CategoryEntry(
-                icon: FoodIcons.knife_fork,
+                icon: CustomIcons.knife_fork,
                 label: 'Spécialités',
                 route: SpecialsPage(),
               ),

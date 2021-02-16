@@ -18,6 +18,7 @@ class ResetSuccessDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(
                     'Password reset link has been sent to your registered email',
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

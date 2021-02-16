@@ -1,4 +1,4 @@
-import 'package:boucherie_conakry/logic/auth/user_model.dart';
+import 'user_model.dart';
 import 'package:boucherie_conakry/logic/cache/prefs.dart';
 
 abstract class UserData {

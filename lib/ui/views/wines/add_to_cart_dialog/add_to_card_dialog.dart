@@ -173,7 +173,7 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                               name: widget.name,
                               category: 'Vins',
                               id: widget.id,
-                              price: _quantity,
+                              price: widget.price,
                               quantity: _quantity,
                             ),
                           );

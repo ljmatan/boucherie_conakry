@@ -1,0 +1,52 @@
+{
+  "name": "CustomIcons",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "8c3edd01b20065188120cbd76803cf6d",
+      "css": "glass_cheers",
+      "code": 63391,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "d6c37ff60e02f259af1970f97c9ce537",
+      "css": "fish",
+      "code": 62840,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "69bf8c6e80f41bb355f7ec9f8981bbbb",
+      "css": "chicken_leg",
+      "code": 59748,
+      "src": "rpgawesome"
+    },
+    {
+      "uid": "041d33fdd0e7a29547536b028cd5ed8b",
+      "css": "knife_fork",
+      "code": 59928,
+      "src": "rpgawesome"
+    },
+    {
+      "uid": "b83f99fd47bff831e25255c9bbbbabe7",
+      "css": "cc-paypal",
+      "code": 61940,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "9698d35be5c118ec7521a98130fddc67",
+      "css": "cc-stripe",
+      "code": 61941,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "1ea48916a85698330b3517e673187444",
+      "css": "money_bill",
+      "code": 61654,
+      "src": "fontawesome5"
+    }
+  ]
+}

@@ -31,6 +31,6 @@ flutter:
     - assets/images/promotions/
     
   fonts:
-    - family: FoodIcons
+    - family: CustomIcons
       fonts:
-        - asset: assets/fonts/Food.ttf
+        - asset: assets/fonts/CustomIcons.ttf
