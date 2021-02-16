@@ -1,5 +1,8 @@
+import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/html_parsing/string_processing.dart';
+import 'package:boucherie_conakry/ui/shared/add_to_cart/add_to_card_dialog.dart';
 import 'package:boucherie_conakry/ui/shared/bookmark_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,9 @@ class SeafoodEntry extends StatefulWidget {
 class _SeafoodEntryState extends State<SeafoodEntry> {
   String _formattedDescription;
 
+  int _quantity;
+  int _portion;
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +45,27 @@ class _SeafoodEntryState extends State<SeafoodEntry> {
     if (_formattedDescription.startsWith(
         'Notre poissonnier a sélectionné pour vous le meilleur poisson.'))
       _formattedDescription = null;
+
+    final OrderItemModel thisItem = CurrentOrder.instance.singleWhere(
+      (product) => product.id == widget.product.id,
+      orElse: () => null,
+    );
+
+    if (thisItem != null) {
+      _quantity = thisItem.quantity;
+      _portion = thisItem.portion;
+    }
   }
+
+  void _setQtyAndPortion([Map info]) => setState(() {
+        if (info != null) {
+          _quantity = info['quantity'];
+          _portion = info['portion'];
+        } else {
+          _quantity = null;
+          _portion = null;
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -143,66 +169,92 @@ class _SeafoodEntryState extends State<SeafoodEntry> {
             ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: kElevationToShadow[1],
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                  bottomRight: Radius.circular(4),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 44,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Icon(Icons.bubble_chart, size: 16),
-                            ),
-                            Text(
-                              'Portion',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+            child: GestureDetector(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: kElevationToShadow[1],
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                    bottomRight: Radius.circular(4),
                   ),
-                  GestureDetector(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(4),
-                          bottomRight: Radius.circular(4),
-                        ),
-                      ),
-                      child: SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 44,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (_quantity == null)
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Icon(Icons.bubble_chart, size: 16),
+                                ),
+                              Text(
+                                _quantity == null
+                                    ? 'Portion'
+                                    : '$_quantity x ' +
+                                        (_portion == 0 ? '500g' : '1kg'),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    onTap: () {},
-                  ),
-                ],
+                    GestureDetector(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(4),
+                            bottomRight: Radius.circular(4),
+                          ),
+                        ),
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Center(
+                            child: Icon(
+                              _quantity == null ? Icons.add : Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: _quantity == null
+                          ? null
+                          : () {
+                              CurrentOrder.removeFromOrder(widget.product.id);
+                              _setQtyAndPortion();
+                            },
+                    ),
+                  ],
+                ),
               ),
+              onTap: () async {
+                final info = await showDialog(
+                  context: context,
+                  barrierColor: Colors.transparent,
+                  builder: (context) => AddToCartDialog(
+                    name: widget.product.name,
+                    category: 'seafood',
+                    id: widget.product.id,
+                    price: int.tryParse(widget.product.price),
+                    quantity: _quantity,
+                    portion: _portion,
+                  ),
+                );
+                if (info != null) _setQtyAndPortion(info);
+              },
             ),
           ),
         ],

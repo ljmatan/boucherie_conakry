@@ -24,14 +24,14 @@ class _ShippingDetailsState extends State<ShippingDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width / 2 - 20,
+                width: MediaQuery.of(context).size.width / 2 - 21,
                 child: TextField(
                   controller: _firstNameController,
                   decoration: InputDecoration(labelText: 'First name'),
                 ),
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 2 - 20,
+                width: MediaQuery.of(context).size.width / 2 - 21,
                 child: TextField(
                   controller: _lastNameController,
                   decoration: InputDecoration(labelText: 'Last name'),

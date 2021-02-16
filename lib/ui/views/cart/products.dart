@@ -1,4 +1,5 @@
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,7 +17,7 @@ class CartProducts extends StatelessWidget {
         for (var category in categories)
           ExpansionTile(
             title: Text(
-              category,
+              I18N.text(category),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -44,7 +45,12 @@ class CartProducts extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                product.name,
+                                product.name +
+                                    (product.portion == null
+                                        ? ''
+                                        : product.portion == 0
+                                            ? ' 500g'
+                                            : ' 1kg'),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -56,19 +62,46 @@ class CartProducts extends StatelessWidget {
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        child: Icon(
-                          Icons.close,
+                      DefaultTextStyle(
+                        style: TextStyle(
                           color: Theme.of(context).accentColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
                         ),
-                        onTap: () {
-                          CurrentOrder.removeFromOrder(product.id);
-                          if (CurrentOrder.instance.length == 0)
-                            Navigator.pop(context);
-                          else
-                            refresh();
-                        },
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              child: const Text(' - '),
+                              onTap: () {
+                                if (product.quantity > 1) {
+                                  CurrentOrder.instance
+                                      .singleWhere((addedProduct) =>
+                                          product.id == addedProduct.id)
+                                      .quantity = product.quantity - 1;
+                                  refresh();
+                                } else {
+                                  CurrentOrder.removeFromOrder(product.id);
+                                  if (CurrentOrder.instance.length == 0)
+                                    Navigator.pop(context);
+                                  else
+                                    refresh();
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              child: const Text(' + '),
+                              onTap: () {
+                                CurrentOrder.instance
+                                    .singleWhere((addedProduct) =>
+                                        product.id == addedProduct.id)
+                                    .quantity = product.quantity + 1;
+                                refresh();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

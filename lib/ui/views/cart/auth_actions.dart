@@ -1,11 +1,11 @@
-import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/ui/views/user_auth/auth_page.dart';
 import 'package:flutter/material.dart';
 
-class CheckoutActions extends StatelessWidget {
+class AuthActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -16,7 +16,7 @@ class CheckoutActions extends StatelessWidget {
               height: 48,
               child: Center(
                 child: Text(
-                  'CLEAR ALL',
+                  'REGISTER',
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                     fontWeight: FontWeight.bold,
@@ -25,10 +25,8 @@ class CheckoutActions extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () {
-              CurrentOrder.clearAll();
-              Navigator.pop(context);
-            },
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => AuthPage(0))),
           ),
           GestureDetector(
             child: DecoratedBox(
@@ -42,7 +40,7 @@ class CheckoutActions extends StatelessWidget {
                 height: 48,
                 child: Center(
                   child: Text(
-                    'CHECKOUT',
+                    'LOGIN',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -52,7 +50,8 @@ class CheckoutActions extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () {},
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => AuthPage(1))),
           ),
         ],
       ),

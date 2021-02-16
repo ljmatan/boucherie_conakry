@@ -1,12 +1,14 @@
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/logic/user/user_data.dart';
+import 'package:boucherie_conakry/ui/views/cart/auth_actions.dart';
 import 'package:boucherie_conakry/ui/views/cart/checkout_actions.dart';
+import 'package:boucherie_conakry/ui/views/cart/disclaimer.dart';
 import 'package:boucherie_conakry/ui/views/cart/payment_method.dart';
 import 'package:boucherie_conakry/ui/views/cart/products.dart';
 import 'package:boucherie_conakry/ui/views/cart/promo_code_input.dart';
 import 'package:boucherie_conakry/ui/views/cart/shipping_details.dart';
 import 'package:boucherie_conakry/ui/views/cart/total_cost.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -59,8 +61,10 @@ class _CartPageState extends State<CartPage> {
           CartProducts(categories: _categories, refresh: _updateCart),
           PromoCodeInput(),
           TotalCost(totalCost: _totalCost),
+          if (UserData.instance.id == null) AuthActions(),
           ShippingDetails(),
           PaymentMethodSelection(),
+          Disclaimer(),
           CheckoutActions(),
         ],
       ),

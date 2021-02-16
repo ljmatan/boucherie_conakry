@@ -2,28 +2,31 @@ import 'dart:async';
 
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
 import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
+import 'package:boucherie_conakry/ui/shared/add_to_cart/portion_button.dart';
 import 'quantity_edit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class WinesAddToCartDialog extends StatefulWidget {
-  final String name;
-  final int id, price, quantity;
+class AddToCartDialog extends StatefulWidget {
+  final String name, category;
+  final int id, price, portion, quantity;
 
-  WinesAddToCartDialog({
+  AddToCartDialog({
     @required this.name,
+    @required this.category,
     @required this.id,
     @required this.price,
+    this.portion,
     @required this.quantity,
   });
 
   @override
   State<StatefulWidget> createState() {
-    return _WinesAddToCartDialogState();
+    return _AddToCartDialogState();
   }
 }
 
-class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
+class _AddToCartDialogState extends State<AddToCartDialog> {
   int _quantity;
 
   final StreamController _quantityController = StreamController.broadcast();
@@ -40,10 +43,21 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
     }
   }
 
+  int _portion;
+
+  final StreamController _portionController = StreamController.broadcast();
+
+  void _setPortion(int portion) {
+    _portion = portion;
+    _portionController.add(_portion);
+    _quantityController.add(_quantity);
+  }
+
   @override
   void initState() {
     super.initState();
     _quantity = widget.quantity ?? 1;
+    _portion = widget.portion ?? 0;
   }
 
   @override
@@ -75,7 +89,27 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12, top: 16),
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PortionButton(
+                        0,
+                        stream: _portionController.stream,
+                        setPortion: _setPortion,
+                        initial: _portion,
+                      ),
+                      PortionButton(
+                        1,
+                        stream: _portionController.stream,
+                        setPortion: _setPortion,
+                        initial: _portion,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -116,7 +150,7 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                           stream: _quantityController.stream,
                           initialData: _quantity,
                           builder: (context, quantity) => Text(
-                            '${NumberFormat().format(widget.price * quantity.data)} GNF',
+                            '${NumberFormat().format(widget.price * quantity.data * (1 + _portion))} GNF',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -171,10 +205,11 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                           CurrentOrder.addToOrder(
                             OrderItemModel(
                               name: widget.name,
-                              category: 'wines',
+                              category: widget.category,
                               id: widget.id,
-                              price: widget.price,
+                              price: widget.price * (1 + _portion),
                               quantity: _quantity,
+                              portion: _portion,
                             ),
                           );
                         else
@@ -182,7 +217,10 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                               .singleWhere((product) => product.id == widget.id)
                               .quantity = _quantity;
 
-                        Navigator.pop(context, _quantity);
+                        Navigator.pop(context, {
+                          'quantity': _quantity,
+                          'portion': _portion,
+                        });
                       },
                     ),
                   ],
@@ -198,6 +236,7 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
   @override
   void dispose() {
     _quantityController.close();
+    _portionController.close();
     super.dispose();
   }
 }

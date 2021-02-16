@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 class OrderItemModel {
   final String name, category;
   final int price, id;
-  int quantity;
+  int quantity, portion;
 
   OrderItemModel({
     @required this.name,
@@ -11,5 +11,6 @@ class OrderItemModel {
     @required this.id,
     @required this.price,
     @required this.quantity,
+    this.portion,
   });
 }
