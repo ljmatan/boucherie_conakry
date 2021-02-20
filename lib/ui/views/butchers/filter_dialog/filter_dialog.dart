@@ -30,11 +30,6 @@ class ButchersFilterDialog extends StatelessWidget {
                 ),
                 const Divider(height: 0),
                 ButchersFilterOption(
-                  label: 'Burger Bomb',
-                  categoryID: 100,
-                ),
-                const Divider(height: 0),
-                ButchersFilterOption(
                   label: I18N.text('pork'),
                   categoryID: 62,
                 ),
