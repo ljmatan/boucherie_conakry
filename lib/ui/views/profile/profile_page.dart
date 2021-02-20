@@ -24,8 +24,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    for (var order in widget.orders)
-      _ordersDecoded.add(jsonDecode(order['orderJsonEncoded']));
+
+    for (var order in widget.orders) {
+      final String encoded = jsonDecode(order['orderJsonEncoded']);
+      _ordersDecoded.add(jsonDecode(encoded));
+    }
   }
 
   @override

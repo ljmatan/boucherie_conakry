@@ -88,33 +88,51 @@ class _SpecialsAddToCartState extends State<SpecialsAddToCart> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Text('Persons'),
+                      child: Text(I18N.text('persons')),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        for (var i = 0; i < 5; i++)
-                          PeopleOption(
-                            index: i,
-                            initial: _persons,
-                            stream: _personsController.stream,
-                            setPersons: _setPersons,
-                          ),
-                      ],
-                    ),
+                    if (MediaQuery.of(context).orientation ==
+                        Orientation.landscape)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          for (var i = 0; i < 10; i++)
+                            PeopleOption(
+                              index: i,
+                              initial: _persons,
+                              stream: _personsController.stream,
+                              setPersons: _setPersons,
+                            ),
+                        ],
+                      ),
+                    if (MediaQuery.of(context).orientation ==
+                        Orientation.portrait)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          for (var i = 0; i < 5; i++)
+                            PeopleOption(
+                              index: i,
+                              initial: _persons,
+                              stream: _personsController.stream,
+                              setPersons: _setPersons,
+                            ),
+                        ],
+                      ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        for (var i = 5; i < 10; i++)
-                          PeopleOption(
-                            index: i,
-                            initial: _persons,
-                            stream: _personsController.stream,
-                            setPersons: _setPersons,
-                          ),
-                      ],
-                    ),
+                    if (MediaQuery.of(context).orientation ==
+                        Orientation.portrait)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          for (var i = 5; i < 10; i++)
+                            PeopleOption(
+                              index: i,
+                              initial: _persons,
+                              stream: _personsController.stream,
+                              setPersons: _setPersons,
+                            ),
+                        ],
+                      ),
                   ],
                 ),
                 Padding(

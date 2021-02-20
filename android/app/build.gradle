@@ -33,7 +33,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.ljubas.boucherie_conakry'
+        applicationId 'guifood.boucherie'
         minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

@@ -30,8 +30,12 @@ class PeopleOption extends StatelessWidget {
             borderRadius: BorderRadius.circular(2),
           ),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width / 5 - 19.2,
-            height: MediaQuery.of(context).size.width / 5 - 19.2,
+            width: MediaQuery.of(context).orientation == Orientation.portrait
+                ? MediaQuery.of(context).size.width / 5 - 19.2
+                : 40,
+            height: MediaQuery.of(context).orientation == Orientation.portrait
+                ? MediaQuery.of(context).size.width / 5 - 19.2
+                : 40,
             child: Center(
               child: Text(
                 '${index + 1}',

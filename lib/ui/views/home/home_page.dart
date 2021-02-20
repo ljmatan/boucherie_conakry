@@ -1,13 +1,14 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/logic/local_db/local_db.dart';
 import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:boucherie_conakry/ui/views/cart/cart_page.dart';
 import 'package:boucherie_conakry/ui/views/home/auth_dialog/auth_dialog.dart';
+import 'package:boucherie_conakry/ui/views/home/background/background_display.dart';
 import 'package:boucherie_conakry/ui/views/home/map_display.dart';
 import 'package:boucherie_conakry/ui/views/profile/profile_page.dart';
 
 import 'bloc/cart_items_number_controller.dart';
 import 'call_button.dart';
-import 'promotions/promotions_display.dart';
 import 'about_us/about_us_display.dart';
 import 'categories/categories_display.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     CartItemsNumberController.init();
   }
+
+  final _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +107,36 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Stack(
         children: [
-          ListView(
-            children: [
-              PromotionsDisplay(),
-              CategoriesDisplay(),
-              AboutUsDisplay(),
-              MapDisplay(),
-            ],
-          ),
+          MediaQuery.of(context).orientation == Orientation.portrait
+              ? PageView(
+                  controller: _pageController,
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    BackgroundDisplay(_pageController),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //PromotionsDisplay(),
+                        CategoriesDisplay(),
+                        AboutUsDisplay(),
+                        MapDisplay(),
+                      ],
+                    ),
+                  ],
+                )
+              : ListView(
+                  children: [
+                    BackgroundDisplay(_pageController),
+                    Column(
+                      children: [
+                        //PromotionsDisplay(),
+                        CategoriesDisplay(),
+                        AboutUsDisplay(),
+                        MapDisplay(),
+                      ],
+                    ),
+                  ],
+                ),
           CallButton(),
         ],
       ),
@@ -120,6 +145,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     CartItemsNumberController.dispose();
     super.dispose();
   }

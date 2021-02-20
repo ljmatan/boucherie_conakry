@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:boucherie_conakry/logic/api/firebase/firebase.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
 import 'package:boucherie_conakry/logic/cache/prefs.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
@@ -144,6 +145,11 @@ class _LoginDisplayState extends State<LoginDisplay> {
                                       userData['id'],
                                       userData['shipping']['address_1'],
                                     );
+                                    try {
+                                      await FirebaseAPI.retrieveOrders();
+                                    } catch (e) {
+                                      print(e.toString());
+                                    }
                                     setState(() => _verifying = false);
                                     showDialog(
                                         context: context,

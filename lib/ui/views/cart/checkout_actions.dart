@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/logic/api/firebase/firebase.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
 import 'package:boucherie_conakry/logic/cache/prefs.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/logic/local_db/local_db.dart';
+import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:boucherie_conakry/ui/views/cart/purchase_success_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -105,27 +107,31 @@ class CheckoutActions extends StatelessWidget {
                     noteController.text,
                   );
                   if (response.statusCode == 201) {
-                    await LocalDB.instance.insert(
-                      'orders',
-                      {
-                        'orderJsonEncoded': jsonEncode(
-                          {
-                            'dateTime': DateTime.now().toIso8601String(),
-                            'totalCost': totalCost,
-                            'products': [
-                              for (var product in CurrentOrder.instance)
-                                {
-                                  'name': product.name,
-                                  'category': product.category,
-                                  'quantity': product.quantity,
-                                  'portion': product.portion,
-                                  'price': product.price,
-                                }
-                            ],
-                          },
-                        ),
-                      },
-                    );
+                    final thisOrder = {
+                      'orderJsonEncoded': jsonEncode(
+                        {
+                          'dateTime': DateTime.now().toIso8601String(),
+                          'totalCost': totalCost,
+                          'products': [
+                            for (var product in CurrentOrder.instance)
+                              {
+                                'name': product.name,
+                                'category': product.category,
+                                'quantity': product.quantity,
+                                'portion': product.portion,
+                                'price': product.price,
+                              }
+                          ],
+                        },
+                      ),
+                    };
+                    await LocalDB.instance.insert('orders', thisOrder);
+                    if (UserData.instance.id != null)
+                      try {
+                        FirebaseAPI.updateOrders(thisOrder);
+                      } catch (e) {
+                        print(e.toString());
+                      }
                     Navigator.pop(context);
                     CurrentOrder.clearAll();
                     showDialog(

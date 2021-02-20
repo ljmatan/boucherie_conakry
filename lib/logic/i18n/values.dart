@@ -22,7 +22,7 @@ abstract class Values {
       'clear all': 'CLEAR ALL',
       'checkout': 'CHECKOUT',
       'name or number missing': 'Please fill out your name and number',
-      'disclaimer': 'Delivery within 24 hours. We will contact you when your order is ready.'
+      'disclaimer': 'Delivery within 24 hours. We will contact you when your order is ready. '
           'To be collected at our premises Corniche Sud de Coléah, Villa KWAME NKRUMAH, in front of the UTS station or delivered to your home (Conakry only - 20,000 GNF)\n\n'
           'For reasons of hygiene and safety, the products are packaged and generally delivered frozen. Possibility of fresh delivery on request on certain products.'
           'The weight of the prepared portions may vary slightly from that of the ordered portions. In the event of a substantial difference, we will inform you before delivery of the order.',
@@ -36,6 +36,8 @@ abstract class Values {
       'address optional': 'Address (optional)',
       'note optional': 'Note (optional)',
       'city': 'City',
+      'order': 'ORDER',
+      'adabout': 'When the variety reigns excellence!',
       'previous orders': 'Previous orders',
       'no previous orders recorded': 'No previous orders recorded.',
       'reset password': 'Reset Password',
@@ -45,6 +47,7 @@ abstract class Values {
           'Forgot your password? Please enter your username or email address. '
               'You will receive a link by email to create a new password.',
       'back': 'BACK',
+      'address': 'Address',
       'email or username': 'Email or username',
       'reset filters': 'Reset',
       'reset': 'RESET',
@@ -93,8 +96,8 @@ abstract class Values {
       'clear all': 'TOUT EFFACER',
       'checkout': 'VÉRIFIER',
       'name or number missing': 'Veuillez remplir votre nom et numéro',
-      'disclaimer': 'Paiement comptant en espèces à la livraison'
-          ' Livraison sous 24h. Nous vous contacterons quand votre commande sera prête. A collecter à nos locaux Corniche Sud de Coléah, Villa KWAME NKRUMAH , en face de la station UTS ou livré à domicile (Conakry uniquement – 20 000 GNF)\n\n'
+      'disclaimer': 'Paiement comptant en espèces à la livraison. '
+          'Livraison sous 24h. Nous vous contacterons quand votre commande sera prête. A collecter à nos locaux Corniche Sud de Coléah, Villa KWAME NKRUMAH , en face de la station UTS ou livré à domicile (Conakry uniquement – 20 000 GNF)\n\n'
           'Pour des questions d’hygiène et de sécurité les produits sont conditionnés et généralement livrés congelés. Possibilité de livraison frais sur demande sur certains produits.'
           'Le poids des portions préparées peut varier légèrement de celui des portions commandées. En cas de différence conséquente nous vous informerons avant livraison de la commande.',
       'cash on delivery': 'Paiement à la livraison',
@@ -107,6 +110,8 @@ abstract class Values {
       'address optional': 'Addresse (optionnel)',
       'note optional': 'Remarque (optionnel)',
       'city': 'Ville',
+      'order': 'COMMANDER',
+      'adabout': 'Quand la variété rencorte l\'excellence!',
       'previous orders': 'Commandes précédentes',
       'no previous orders recorded': 'Aucune commande précédente enregistrée.',
       'reset password': 'réinitialiser le mot de passe',
@@ -117,6 +122,7 @@ abstract class Values {
               'Vous recevrez un lien par e-mail pour créer un nouveau mot de passe.',
       'email or username': 'E-mail ou nom d\'utilisateur ',
       'back': 'RETOUR',
+      'address': 'Addresse',
       'reset filters': 'Annuler',
       'reset': 'ANNULER',
       'password reset has been sent':

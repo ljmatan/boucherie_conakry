@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "85878699176",
+    "firebase_url": "https://boucherieconakry-4571d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "boucherieconakry-4571d",
+    "storage_bucket": "boucherieconakry-4571d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85878699176:android:335e590b9d317267e2be9d",
+        "android_client_info": {
+          "package_name": "guifood.boucherie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85878699176-oc5ebfg3l57hhhqguts980khhqlebp3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8jCcXx_r2lhaudjESEKuWpOvlzYLD5Jg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85878699176-oc5ebfg3l57hhhqguts980khhqlebp3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
