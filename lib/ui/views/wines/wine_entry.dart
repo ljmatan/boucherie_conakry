@@ -2,6 +2,7 @@ import 'package:boucherie_conakry/global/current_order/current_order.dart';
 import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/html_parsing/string_processing.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/shared/bookmark_button.dart';
 import 'add_to_cart_dialog/add_to_card_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -67,7 +68,7 @@ class _WineEntryState extends State<WineEntry> {
             child: widget.index == 0 ? null : const Divider(height: 0),
           ),
           SizedBox(
-            height: 130,
+            height: MediaQuery.of(context).size.width / 3,
             child: Row(
               children: [
                 DecoratedBox(
@@ -76,8 +77,8 @@ class _WineEntryState extends State<WineEntry> {
                     boxShadow: kElevationToShadow[1],
                   ),
                   child: SizedBox(
-                    width: 100,
-                    height: 130,
+                    width: MediaQuery.of(context).size.width / 4,
+                    height: MediaQuery.of(context).size.width / 3,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: CachedNetworkImage(
@@ -165,8 +166,8 @@ class _WineEntryState extends State<WineEntry> {
                               ),
                             Text(
                               _quantity != null
-                                  ? '$_quantity bouteilles'
-                                  : 'Quantite',
+                                  ? '$_quantity ' + I18N.text('bottles')
+                                  : I18N.text('quantity'),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,

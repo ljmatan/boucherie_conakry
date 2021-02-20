@@ -1,3 +1,5 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
+
 import 'filter_option.dart';
 import 'package:flutter/material.dart';
 
@@ -17,23 +19,49 @@ class ButchersFilterDialog extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ButchersFilterOption(label: 'Mouton', categoryID: 15),
+                ButchersFilterOption(
+                  label: I18N.text('sheep'),
+                  categoryID: 15,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'bœuf', categoryID: 72),
+                ButchersFilterOption(
+                  label: I18N.text('beef'),
+                  categoryID: 72,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Burger Bomb', categoryID: 100),
+                ButchersFilterOption(
+                  label: 'Burger Bomb',
+                  categoryID: 100,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Porc', categoryID: 62),
+                ButchersFilterOption(
+                  label: I18N.text('pork'),
+                  categoryID: 62,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Poulet du pays', categoryID: 111),
+                ButchersFilterOption(
+                  label: I18N.text('country chicken'),
+                  categoryID: 111,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Saucisse', categoryID: 84),
+                ButchersFilterOption(
+                  label: I18N.text('sausages'),
+                  categoryID: 84,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Veau', categoryID: 93),
+                ButchersFilterOption(
+                  label: I18N.text('veal'),
+                  categoryID: 93,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Volaille', categoryID: 96),
+                ButchersFilterOption(
+                  label: I18N.text('poultry'),
+                  categoryID: 96,
+                ),
                 const Divider(height: 0),
-                ButchersFilterOption(label: 'Annuler')
+                ButchersFilterOption(
+                  label: I18N.text('reset filters'),
+                ),
               ],
             ),
           ),

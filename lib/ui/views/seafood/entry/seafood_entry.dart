@@ -2,6 +2,7 @@ import 'package:boucherie_conakry/global/current_order/current_order.dart';
 import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/html_parsing/string_processing.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/shared/add_to_cart/add_to_card_dialog.dart';
 import 'package:boucherie_conakry/ui/shared/bookmark_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,8 +24,7 @@ class SeafoodEntry extends StatefulWidget {
 class _SeafoodEntryState extends State<SeafoodEntry> {
   String _formattedDescription;
 
-  int _quantity;
-  int _portion;
+  int _quantity, _portion;
 
   @override
   void initState() {
@@ -132,7 +132,7 @@ class _SeafoodEntryState extends State<SeafoodEntry> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             if (widget.product.description.contains('8'))
-                              Text('Pour 4 à 8 personnes')
+                              Text(I18N.text('4 to 8'))
                             else if (widget.product.defaultAttributes.length >
                                     0 &&
                                 widget.product.defaultAttributes?.first
@@ -245,10 +245,8 @@ class _SeafoodEntryState extends State<SeafoodEntry> {
                   context: context,
                   barrierColor: Colors.transparent,
                   builder: (context) => AddToCartDialog(
-                    name: widget.product.name,
+                    product: widget.product,
                     category: 'seafood',
-                    id: widget.product.id,
-                    price: int.tryParse(widget.product.price),
                     quantity: _quantity,
                     portion: _portion,
                   ),

@@ -2,30 +2,31 @@ import 'dart:async';
 
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
 import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
+import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
-import 'quantity_edit_button.dart';
+import 'package:boucherie_conakry/ui/shared/add_to_cart/quantity_edit_button.dart';
+import 'package:boucherie_conakry/ui/views/specials/add_to_cart/people_option.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class WinesAddToCartDialog extends StatefulWidget {
-  final String name;
-  final int id, price, quantity;
+class SpecialsAddToCart extends StatefulWidget {
+  final Product product;
+  final int quantity, persons;
 
-  WinesAddToCartDialog({
-    @required this.name,
-    @required this.id,
-    @required this.price,
+  SpecialsAddToCart({
+    @required this.product,
     @required this.quantity,
+    @required this.persons,
   });
 
   @override
   State<StatefulWidget> createState() {
-    return _WinesAddToCartDialogState();
+    return _SpecialsAddToCartState();
   }
 }
 
-class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
-  int _quantity;
+class _SpecialsAddToCartState extends State<SpecialsAddToCart> {
+  int _quantity, _persons;
 
   final StreamController _quantityController = StreamController.broadcast();
 
@@ -41,10 +42,19 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
     }
   }
 
+  final StreamController _personsController = StreamController.broadcast();
+
+  void _setPersons(int persons) {
+    _persons = persons;
+    _personsController.add(_persons);
+    _quantityController.add(_quantity);
+  }
+
   @override
   void initState() {
     super.initState();
     _quantity = widget.quantity ?? 1;
+    _persons = widget.persons ?? 0;
   }
 
   @override
@@ -53,21 +63,19 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: kElevationToShadow[16],
-            borderRadius: BorderRadius.circular(6),
-          ),
+        child: Material(
+          elevation: 16,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Flexible(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: Text(
-                    widget.name,
-                    textAlign: TextAlign.center,
+                    widget.product.name,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
@@ -75,10 +83,43 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                     ),
                   ),
                 ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text('Persons'),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (var i = 0; i < 5; i++)
+                          PeopleOption(
+                            index: i,
+                            initial: _persons,
+                            stream: _personsController.stream,
+                            setPersons: _setPersons,
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (var i = 5; i < 10; i++)
+                          PeopleOption(
+                            index: i,
+                            initial: _persons,
+                            stream: _personsController.stream,
+                            setPersons: _setPersons,
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12, top: 16),
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       QuantityEditButton(
                         label: '-',
@@ -106,27 +147,26 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                     ],
                   ),
                 ),
-                if (widget.price != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(I18N.text('total') + ':'),
-                        StreamBuilder(
-                          stream: _quantityController.stream,
-                          initialData: _quantity,
-                          builder: (context, quantity) => Text(
-                            '${NumberFormat().format(widget.price * quantity.data)} GNF',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(I18N.text('total') + ':'),
+                      StreamBuilder(
+                        stream: _quantityController.stream,
+                        initialData: _quantity,
+                        builder: (context, quantity) => Text(
+                          '${NumberFormat().format(int.tryParse(widget.product.price) * quantity.data * (1 + _persons))} GNF',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -171,23 +211,29 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
                         if (widget.quantity == null)
                           CurrentOrder.addToOrder(
                             OrderItemModel(
-                              name: widget.name,
-                              category: 'wines',
-                              id: widget.id,
-                              price: widget.price,
+                              name: widget.product.name,
+                              category: 'specials',
+                              id: widget.product.id,
+                              price: int.tryParse(widget.product.price) *
+                                  (1 + _persons),
                               quantity: _quantity,
+                              variationID: widget.product.variations[_persons],
                             ),
                           );
                         else
                           CurrentOrder.instance
-                              .singleWhere((product) => product.id == widget.id)
+                              .singleWhere(
+                                  (product) => product.id == widget.product.id)
                               .quantity = _quantity;
 
-                        Navigator.pop(context, _quantity);
+                        Navigator.pop(context, {
+                          'quantity': _quantity,
+                          'persons': _persons,
+                        });
                       },
                     ),
                   ],
-                ),
+                )
               ],
             ),
           ),
@@ -199,6 +245,7 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
   @override
   void dispose() {
     _quantityController.close();
+    _personsController.close();
     super.dispose();
   }
 }

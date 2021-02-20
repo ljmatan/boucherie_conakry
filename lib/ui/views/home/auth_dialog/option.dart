@@ -17,7 +17,7 @@ class AuthDialogOption extends StatelessWidget {
           boxShadow: kElevationToShadow[2],
         ),
         child: SizedBox(
-          width: MediaQuery.of(context).size.width / 2 - 16,
+          width: MediaQuery.of(context).size.width / 2 - 34,
           height: 48,
           child: Center(
             child: Text(

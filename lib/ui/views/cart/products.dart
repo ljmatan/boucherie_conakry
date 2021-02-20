@@ -56,7 +56,8 @@ class CartProducts extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Sum: ${NumberFormat().format(product.price * product.quantity)} GNF',
+                                I18N.text('sum') +
+                                    ': ${NumberFormat().format(product.price * product.quantity)} GNF',
                               ),
                             ],
                           ),

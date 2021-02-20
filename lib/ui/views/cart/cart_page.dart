@@ -1,4 +1,5 @@
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:boucherie_conakry/ui/views/cart/auth_actions.dart';
 import 'package:boucherie_conakry/ui/views/cart/checkout_actions.dart';
@@ -41,33 +42,80 @@ class _CartPageState extends State<CartPage> {
     return cost;
   }
 
+  final _promoCodeController = TextEditingController();
+  final _firstNameController =
+      TextEditingController(text: UserData.instance.firstName ?? '');
+  final _lastNameController =
+      TextEditingController(text: UserData.instance.lastName ?? '');
+  final _phoneNumberController =
+      TextEditingController(text: UserData.instance.number ?? '');
+  final _addressController =
+      TextEditingController(text: UserData.instance.address ?? '');
+  final _noteController = TextEditingController();
+
+  void _rebuildCart() => setState(() {
+        _firstNameController.text = UserData.instance.firstName;
+        _lastNameController.text = UserData.instance.lastName;
+        _phoneNumberController.text = UserData.instance.number ?? '';
+        _addressController.text = UserData.instance.address ?? '';
+      });
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        titleSpacing: 12,
-        title: Text('Cart'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close),
-            splashColor: Colors.transparent,
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          titleSpacing: 12,
+          title: Text(I18N.text('cart')),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.close),
+              splashColor: Colors.transparent,
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+        body: ListView(
+          children: [
+            CartProducts(categories: _categories, refresh: _updateCart),
+            PromoCodeInput(_promoCodeController),
+            TotalCost(totalCost: _totalCost),
+            if (UserData.instance.id == null)
+              AuthActions(rebuildCart: _rebuildCart),
+            ShippingDetails(
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              numberController: _phoneNumberController,
+              addressController: _addressController,
+              noteController: _noteController,
+            ),
+            PaymentMethodSelection(),
+            Disclaimer(),
+            CheckoutActions(
+              totalCost: _totalCost,
+              promoCodeController: _promoCodeController,
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              numberController: _phoneNumberController,
+              addressController: _addressController,
+              noteController: _noteController,
+            ),
+          ],
+        ),
       ),
-      body: ListView(
-        children: [
-          CartProducts(categories: _categories, refresh: _updateCart),
-          PromoCodeInput(),
-          TotalCost(totalCost: _totalCost),
-          if (UserData.instance.id == null) AuthActions(),
-          ShippingDetails(),
-          PaymentMethodSelection(),
-          Disclaimer(),
-          CheckoutActions(),
-        ],
-      ),
+      onWillPop: () async => false,
     );
+  }
+
+  @override
+  void dispose() {
+    _promoCodeController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneNumberController.dispose();
+    _addressController.dispose();
+    _noteController.dispose();
+    super.dispose();
   }
 }

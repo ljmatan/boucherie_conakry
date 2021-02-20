@@ -1,13 +1,14 @@
 import 'package:boucherie_conakry/global/products.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
-import 'package:boucherie_conakry/logic/i18n/i18n.dart';
+import 'package:boucherie_conakry/ui/views/butchers/butchers_entry.dart';
 import 'package:boucherie_conakry/ui/views/seafood/entry/seafood_entry.dart';
 import 'package:boucherie_conakry/ui/views/specials/entry/specials_entry.dart';
+import 'package:boucherie_conakry/ui/views/wines/wine_entry.dart';
 import 'package:flutter/material.dart';
 
-class SeafoodPage extends StatelessWidget {
-  static Future<List<Product>> _getSeafood = WoocommerceAPI.getSeafood();
+class FeaturedPage extends StatelessWidget {
+  static Future<List<Product>> _getFeatured = WoocommerceAPI.getFeatured();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class SeafoodPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 12,
-        title: Text(I18N.text('seafood')),
+        title: Text('Promotions'),
         actions: [
           IconButton(
             icon: Icon(Icons.close),
@@ -25,7 +26,7 @@ class SeafoodPage extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: _getSeafood,
+        future: _getFeatured,
         initialData: Products.seafood,
         builder: (BuildContext context,
                 AsyncSnapshot<List<Product>> products) =>
@@ -39,10 +40,25 @@ class SeafoodPage extends StatelessWidget {
                             product: products.data[i],
                             index: i,
                           )
-                        : SeafoodEntry(
-                            product: products.data[i],
-                            index: i,
-                          ),
+                        : products.data[i].categories.first.id == 113 ||
+                                products.data[i].categories.first.id == 114 ||
+                                products.data[i].categories.first.id == 115 ||
+                                products.data[i].categories.first.id == 116
+                            ? WineEntry(
+                                UniqueKey(),
+                                product: products.data[i],
+                                index: i,
+                              )
+                            : products.data[i].categories.first.id == 82
+                                ? SeafoodEntry(
+                                    product: products.data[i],
+                                    index: i,
+                                  )
+                                : ButchersEntry(
+                                    UniqueKey(),
+                                    product: products.data[i],
+                                    index: i,
+                                  ),
                   )
                 : Center(
                     child: products.connectionState != ConnectionState.done &&

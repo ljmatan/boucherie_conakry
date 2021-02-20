@@ -1,3 +1,4 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsDisplay extends StatelessWidget {
@@ -18,11 +19,7 @@ class AboutUsDisplay extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12),
-            child: Text(
-              'La Boucherie – Poissonnerie GUI FOOD, à Conakry, propose des produits de qualité pour faire de chacun de vos repas une véritable réussite.\n\n'
-              'Les commandes sont disponibles sous 24h, à collecter à la Boucherie, Corniche Sud de Coléah, Villa KWAME NKRUMAH , '
-              'en face de la station UTS ou livrées à domicile (Conakry uniquement – 20 000 GNF)',
-            ),
+            child: Text(I18N.text('about')),
           ),
         ],
       ),

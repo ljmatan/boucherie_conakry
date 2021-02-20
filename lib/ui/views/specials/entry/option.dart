@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SpecialsOrderOption extends StatelessWidget {
+  final int amount;
   final IconData icon;
   final String label;
 
-  SpecialsOrderOption({@required this.icon, @required this.label});
+  SpecialsOrderOption({
+    @required this.amount,
+    @required this.icon,
+    @required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +21,16 @@ class SpecialsOrderOption extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Icon(icon, size: 16),
-              ),
+              if (amount == null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Icon(icon, size: 16),
+                ),
               Text(
-                label,
+                (amount == null
+                        ? ''
+                        : '${amount + (label == 'Personnes' ? 1 : 0)} ') +
+                    label,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

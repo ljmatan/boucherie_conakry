@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 
-class PromoCodeInput extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _PromoCodeInputState();
-  }
-}
+class PromoCodeInput extends StatelessWidget {
+  final TextEditingController promoCodeController;
 
-class _PromoCodeInputState extends State<PromoCodeInput> {
-  final _promoCodeController = TextEditingController();
+  PromoCodeInput(this.promoCodeController);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +14,7 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
         child: Stack(
           children: [
             TextField(
-              controller: _promoCodeController,
+              controller: promoCodeController,
               decoration: InputDecoration(
                 labelText: 'Promo code',
               ),

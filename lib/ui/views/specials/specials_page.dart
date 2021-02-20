@@ -1,6 +1,7 @@
 import 'package:boucherie_conakry/global/products.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'entry/specials_entry.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class SpecialsPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 12,
-        title: Text('Spécialités'),
+        title: Text(I18N.text('specials')),
         actions: [
           IconButton(
             icon: Icon(Icons.close),
@@ -32,6 +33,7 @@ class SpecialsPage extends StatelessWidget {
                 ? ListView.builder(
                     itemCount: products.data.length,
                     itemBuilder: (context, i) => SpecialsEntry(
+                      UniqueKey(),
                       product: products.data[i],
                       index: i,
                     ),

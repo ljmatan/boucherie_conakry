@@ -4,7 +4,7 @@ import 'package:boucherie_conakry/global/products.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
 
-import 'entry/promotion_carousel_entry.dart';
+import 'promotion_carousel_entry.dart';
 import 'bloc/promotion_index_controller.dart';
 import 'indicator_dot.dart';
 import 'package:flutter/material.dart';

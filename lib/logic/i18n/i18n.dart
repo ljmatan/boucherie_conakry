@@ -5,9 +5,9 @@ import 'values.dart';
 
 abstract class I18N {
   static String _locale = Prefs.instance.getString('locale') ??
-          ui.Platform.localeName.startsWith('fr')
-      ? 'fr'
-      : 'en';
+          ui.Platform.localeName.startsWith('en')
+      ? 'en'
+      : 'fr';
 
   static String get locale => _locale;
 
@@ -16,5 +16,5 @@ abstract class I18N {
     Prefs.instance.setString('locale', newLocale);
   }
 
-  static String text(String text) => Values.instance[locale][text];
+  static String text(String text) => Values.instance['fr'][text];
 }

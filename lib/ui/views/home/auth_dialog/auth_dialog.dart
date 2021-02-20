@@ -1,3 +1,4 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/views/home/auth_dialog/option.dart';
 import 'package:flutter/material.dart';
 
@@ -13,35 +14,23 @@ class _AuthDialogState extends State<AuthDialog> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
         child: Material(
-          color: Colors.transparent,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.white,
-                  Colors.white70,
-                  Colors.white.withAlpha(0)
-                ],
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 300, 12, 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AuthDialogOption(label: 'REGISTER', route: 0),
-                  AuthDialogOption(label: 'LOGIN', route: 1),
-                ],
-              ),
+          elevation: 16,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AuthDialogOption(label: I18N.text('register'), route: 0),
+                AuthDialogOption(label: I18N.text('login'), route: 1),
+              ],
             ),
           ),
         ),
-        onTap: () => Navigator.pop(context),
       ),
     );
   }

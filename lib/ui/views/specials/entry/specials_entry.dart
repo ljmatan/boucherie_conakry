@@ -1,5 +1,9 @@
+import 'package:boucherie_conakry/global/current_order/current_order.dart';
+import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/shared/bookmark_button.dart';
+import 'package:boucherie_conakry/ui/views/specials/add_to_cart/add_to_cart_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'option.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +13,8 @@ class SpecialsEntry extends StatefulWidget {
   final Product product;
   final int index;
 
-  SpecialsEntry({@required this.product, @required this.index});
+  SpecialsEntry(Key key, {@required this.product, @required this.index})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +25,8 @@ class SpecialsEntry extends StatefulWidget {
 class _SpecialsEntryState extends State<SpecialsEntry> {
   List<String> _servings = [];
   String _formattedDescription;
+
+  int _quantity, _persons;
 
   @override
   void initState() {
@@ -48,7 +55,27 @@ class _SpecialsEntryState extends State<SpecialsEntry> {
         RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
     if (descriptionValidation.hasMatch(_formattedDescription))
       _formattedDescription = null;
+
+    final OrderItemModel thisItem = CurrentOrder.instance.singleWhere(
+      (product) => product.id == widget.product.id,
+      orElse: () => null,
+    );
+
+    if (thisItem != null) {
+      _quantity = thisItem.quantity;
+      _persons = thisItem.portion;
+    }
   }
+
+  void _setQtyAndPersons([Map info]) => setState(() {
+        if (info != null) {
+          _quantity = info['quantity'];
+          _persons = info['persons'];
+        } else {
+          _quantity = null;
+          _persons = null;
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -97,26 +124,15 @@ class _SpecialsEntryState extends State<SpecialsEntry> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  widget.product.name,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
+                            Flexible(
+                              child: Text(
+                                widget.product.name,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 19,
                                 ),
-                                Text(
-                                  'Machine incluse',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                             BookmarkButton(id: widget.product.id.toString()),
                           ],
@@ -128,7 +144,7 @@ class _SpecialsEntryState extends State<SpecialsEntry> {
                             if (int.tryParse(_servings[0]) != null &&
                                 int.tryParse(_servings[1]) != null)
                               Text(
-                                'Pour - ${_servings[0]} à ${_servings[1]} personnes',
+                                I18N.text('4 to 8'),
                                 style: const TextStyle(fontSize: 12),
                               ),
                             Text(
@@ -155,58 +171,80 @@ class _SpecialsEntryState extends State<SpecialsEntry> {
           if (_formattedDescription != null)
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text(_formattedDescription),
+              child: Text('${I18N.text('prepared in restaurant')}, ' +
+                  _formattedDescription),
             ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: kElevationToShadow[1],
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                  bottomRight: Radius.circular(4),
+            child: GestureDetector(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: kElevationToShadow[1],
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                    bottomRight: Radius.circular(4),
+                  ),
                 ),
-              ),
-              child: Row(
-                children: [
-                  SpecialsOrderOption(
-                    icon: Icons.people,
-                    label: 'Personnes',
-                  ),
-                  DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.grey.shade200),
-                    child: const SizedBox(width: 0.5, height: 44),
-                  ),
-                  SpecialsOrderOption(
-                    icon: Icons.bubble_chart,
-                    label: 'Quantité',
-                  ),
-                  GestureDetector(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(4),
-                          bottomRight: Radius.circular(4),
+                child: Row(
+                  children: [
+                    SpecialsOrderOption(
+                      amount: _persons,
+                      icon: Icons.people,
+                      label: I18N.text('persons'),
+                    ),
+                    DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.grey.shade200),
+                      child: const SizedBox(width: 0.5, height: 44),
+                    ),
+                    SpecialsOrderOption(
+                      amount: _quantity,
+                      icon: Icons.bubble_chart,
+                      label: I18N.text('quantity'),
+                    ),
+                    GestureDetector(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).accentColor,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(4),
+                            bottomRight: Radius.circular(4),
+                          ),
                         ),
-                      ),
-                      child: SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: Center(
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Center(
+                            child: Icon(
+                              _quantity == null ? Icons.add : Icons.close,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
+                      onTap: _quantity == null
+                          ? null
+                          : () {
+                              CurrentOrder.removeFromOrder(widget.product.id);
+                              _setQtyAndPersons();
+                            },
                     ),
-                    onTap: () {},
-                  ),
-                ],
+                  ],
+                ),
               ),
+              onTap: () async {
+                final info = await showDialog(
+                  context: context,
+                  barrierColor: Colors.transparent,
+                  builder: (context) => SpecialsAddToCart(
+                    product: widget.product,
+                    quantity: _quantity,
+                    persons: _persons,
+                  ),
+                );
+                if (info != null) _setQtyAndPersons(info);
+              },
             ),
           ),
         ],

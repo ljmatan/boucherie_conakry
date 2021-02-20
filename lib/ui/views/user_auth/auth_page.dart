@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
+
 import 'forgot_password/forgot_password_display.dart.dart';
-import 'register_display.dart';
-import 'login_display.dart';
+import 'register/register_display.dart';
+import 'login/login_display.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
@@ -47,38 +49,41 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        titleSpacing: 12,
-        title: StreamBuilder(
-          stream: _titleController.stream,
-          initialData: widget.page,
-          builder: (context, page) => Text(
-            page.data == 0
-                ? 'Register'
-                : page.data == 1
-                    ? 'Login'
-                    : 'Forgot password',
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          titleSpacing: 12,
+          title: StreamBuilder(
+            stream: _titleController.stream,
+            initialData: widget.page,
+            builder: (context, page) => Text(
+              page.data == 0
+                  ? I18N.text('register page title')
+                  : page.data == 1
+                      ? I18N.text('login page title')
+                      : I18N.text('forgot password page title'),
+            ),
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.close),
+              splashColor: Colors.transparent,
+              onPressed: () => Navigator.pop(context, false),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close),
-            splashColor: Colors.transparent,
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            RegisterDisplay(goToPage: _animateToPage),
+            LoginDisplay(goToPage: _animateToPage),
+            ForgotPasswordDisplay(goToPage: _animateToPage),
+          ],
+        ),
       ),
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          RegisterDisplay(goToPage: _animateToPage),
-          LoginDisplay(goToPage: _animateToPage),
-          ForgotPasswordDisplay(goToPage: _animateToPage),
-        ],
-      ),
+      onWillPop: () async => false,
     );
   }
 

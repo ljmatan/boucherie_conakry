@@ -1,4 +1,5 @@
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
+import 'package:boucherie_conakry/ui/views/featured/featured_page.dart';
 import 'promotions_carousel/promotions_carousel_display.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,10 @@ class _PromotionsDisplayState extends State<PromotionsDisplay> {
                     ),
                   ),
                 ),
-                onTap: _viewAllButtonDisplayed ? () {} : null,
+                onTap: _viewAllButtonDisplayed
+                    ? () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => FeaturedPage()))
+                    : null,
               ),
             ],
           ),

@@ -1,7 +1,12 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/views/user_auth/auth_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthActions extends StatelessWidget {
+  final Function rebuildCart;
+
+  AuthActions({@required this.rebuildCart});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +21,7 @@ class AuthActions extends StatelessWidget {
               height: 48,
               child: Center(
                 child: Text(
-                  'REGISTER',
+                  I18N.text('register'),
                   style: TextStyle(
                     color: Theme.of(context).accentColor,
                     fontWeight: FontWeight.bold,
@@ -25,8 +30,12 @@ class AuthActions extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => AuthPage(0))),
+            onTap: () async {
+              final rebuild = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AuthPage(0)));
+              if (rebuild) rebuildCart();
+            },
           ),
           GestureDetector(
             child: DecoratedBox(
@@ -40,7 +49,7 @@ class AuthActions extends StatelessWidget {
                 height: 48,
                 child: Center(
                   child: Text(
-                    'LOGIN',
+                    I18N.text('login'),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -50,8 +59,12 @@ class AuthActions extends StatelessWidget {
                 ),
               ),
             ),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => AuthPage(1))),
+            onTap: () async {
+              final rebuild = await Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AuthPage(1)));
+              if (rebuild) rebuildCart();
+            },
           ),
         ],
       ),

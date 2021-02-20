@@ -1,12 +1,12 @@
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 
-class ResetSuccessDialog extends StatelessWidget {
+class PurchaseSuccessDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Material(
           elevation: 16,
           color: Colors.white,
@@ -19,11 +19,11 @@ class ResetSuccessDialog extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Text(
-                    I18N.text('password reset has been sent'),
+                    I18N.text('purchase successful'),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -46,7 +46,7 @@ class ResetSuccessDialog extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    Navigator.pop(context, false);
+                    Navigator.pop(context);
                   },
                 ),
               ],

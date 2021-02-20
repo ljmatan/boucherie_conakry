@@ -1,3 +1,4 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +15,7 @@ class TotalCost extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Total:',
+            I18N.text('total') + ':',
             style: const TextStyle(
               fontSize: 18,
               color: Colors.grey,

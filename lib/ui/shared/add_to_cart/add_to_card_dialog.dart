@@ -2,21 +2,22 @@ import 'dart:async';
 
 import 'package:boucherie_conakry/global/current_order/current_order.dart';
 import 'package:boucherie_conakry/global/current_order/order_item_model.dart';
+import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/ui/shared/add_to_cart/portion_button.dart';
 import 'quantity_edit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddToCartDialog extends StatefulWidget {
-  final String name, category;
-  final int id, price, portion, quantity;
+  final Product product;
+  final String category;
+  final int portion, quantity;
 
   AddToCartDialog({
-    @required this.name,
+    @required this.product,
     @required this.category,
-    @required this.id,
-    @required this.price,
-    this.portion,
+    @required this.portion,
     @required this.quantity,
   });
 
@@ -53,11 +54,17 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
     _quantityController.add(_quantity);
   }
 
+  int _variationPrice;
+
   @override
   void initState() {
     super.initState();
     _quantity = widget.quantity ?? 1;
     _portion = widget.portion ?? 0;
+    _variationPrice = int.tryParse(widget.product.priceHtml
+        .split('&ndash')
+        .last
+        .replaceAll(RegExp(r'[^0-9]'), ''));
   }
 
   @override
@@ -79,37 +86,41 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
               children: [
                 Flexible(
                   child: Text(
-                    widget.name,
+                    widget.product.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 23,
+                      fontSize: 19,
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PortionButton(
-                        0,
-                        stream: _portionController.stream,
-                        setPortion: _setPortion,
-                        initial: _portion,
-                      ),
-                      PortionButton(
-                        1,
-                        stream: _portionController.stream,
-                        setPortion: _setPortion,
-                        initial: _portion,
-                      ),
-                    ],
+                if (!widget.product.name.contains('entier'))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PortionButton(
+                          0,
+                          stream: _portionController.stream,
+                          setPortion: _setPortion,
+                          initial: _portion,
+                        ),
+                        PortionButton(
+                          1,
+                          stream: _portionController.stream,
+                          setPortion: _setPortion,
+                          initial: _portion,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.only(
+                    bottom: 12,
+                    top: widget.product.name.contains('entier') ? 16 : 12,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -139,18 +150,18 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
                     ],
                   ),
                 ),
-                if (widget.price != null)
+                if (widget.product.price != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Total:'),
+                        Text(I18N.text('total') + ':'),
                         StreamBuilder(
                           stream: _quantityController.stream,
                           initialData: _quantity,
                           builder: (context, quantity) => Text(
-                            '${NumberFormat().format(widget.price * quantity.data * (1 + _portion))} GNF',
+                            '${NumberFormat().format((_portion == 0 ? int.tryParse(widget.product.price) : _variationPrice) * quantity.data)} GNF',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -170,7 +181,7 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
                         height: 48,
                         child: Center(
                           child: Text(
-                            'CANCEL',
+                            I18N.text('cancel'),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).accentColor,
@@ -191,7 +202,7 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
                           height: 48,
                           child: Center(
                             child: Text(
-                              'CONFIRM',
+                              I18N.text('confirm'),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -204,17 +215,26 @@ class _AddToCartDialogState extends State<AddToCartDialog> {
                         if (widget.quantity == null)
                           CurrentOrder.addToOrder(
                             OrderItemModel(
-                              name: widget.name,
+                              name: widget.product.name,
                               category: widget.category,
-                              id: widget.id,
-                              price: widget.price * (1 + _portion),
+                              id: widget.product.id,
+                              price: _portion == 0
+                                  ? int.tryParse(widget.product.price)
+                                  : _variationPrice,
                               quantity: _quantity,
-                              portion: _portion,
+                              portion: widget.product.name.contains('entier')
+                                  ? null
+                                  : _portion,
+                              variationID:
+                                  widget.product.name.contains('entier')
+                                      ? null
+                                      : widget.product.variations[_portion],
                             ),
                           );
                         else
                           CurrentOrder.instance
-                              .singleWhere((product) => product.id == widget.id)
+                              .singleWhere(
+                                  (product) => product.id == widget.product.id)
                               .quantity = _quantity;
 
                         Navigator.pop(context, {

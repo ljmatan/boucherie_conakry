@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 
 import 'reset_success_dialog.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Mot de passe perdu? Veuillez saisir votre identifiant ou votre adresse e-mail. '
-                  'Vous recevrez un lien par e-mail pour créer un nouveau mot de passe.',
-                ),
+                Text(I18N.text('forgot password description')),
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 12),
                   child: SizedBox(
@@ -45,8 +43,9 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                       enabled: !_sending,
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        labelText: 'Email or username',
+                        labelText: I18N.text('email or username'),
                       ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
                   ),
                 ),
@@ -63,7 +62,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                           height: 48,
                           child: Center(
                             child: Text(
-                              'BACK',
+                              I18N.text('back'),
                               style: TextStyle(
                                 color: Theme.of(context).accentColor,
                                 fontWeight: FontWeight.bold,
@@ -73,7 +72,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                           ),
                         ),
                       ),
-                      onTap: () => widget.goToPage(1),
+                      onTap: _sending ? null : () => widget.goToPage(1),
                     ),
                     GestureDetector(
                       child: DecoratedBox(
@@ -96,7 +95,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                                     ),
                                   )
                                 : Text(
-                                    'RESET',
+                                    I18N.text('reset'),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,

@@ -1,5 +1,5 @@
-import 'package:boucherie_conakry/logic/i18n/locale_controller.dart';
-
+import 'logic/i18n/locale_controller.dart';
+import 'logic/local_db/local_db.dart';
 import 'logic/cache/prefs.dart';
 import 'other/overscroll_removed.dart';
 import 'ui/views/home/home_page.dart';
@@ -19,6 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Prefs.init();
+
+  await LocalDB.init();
 
   runApp(BoucherieConakry());
 }

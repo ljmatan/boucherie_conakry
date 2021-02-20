@@ -1,17 +1,20 @@
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:flutter/material.dart';
 
-class ShippingDetails extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ShippingDetailsState();
-  }
-}
+class ShippingDetails extends StatelessWidget {
+  final TextEditingController firstNameController,
+      lastNameController,
+      numberController,
+      addressController,
+      noteController;
 
-class _ShippingDetailsState extends State<ShippingDetails> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _noteController = TextEditingController();
+  ShippingDetails({
+    @required this.firstNameController,
+    @required this.lastNameController,
+    @required this.numberController,
+    @required this.addressController,
+    @required this.noteController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,27 +29,42 @@ class _ShippingDetailsState extends State<ShippingDetails> {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2 - 21,
                 child: TextField(
-                  controller: _firstNameController,
-                  decoration: InputDecoration(labelText: 'First name'),
+                  controller: firstNameController,
+                  decoration:
+                      InputDecoration(labelText: I18N.text('first name')),
                 ),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2 - 21,
                 child: TextField(
-                  controller: _lastNameController,
-                  decoration: InputDecoration(labelText: 'Last name'),
+                  controller: lastNameController,
+                  decoration:
+                      InputDecoration(labelText: I18N.text('last name')),
                 ),
               ),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TextField(
+                controller: numberController,
+                decoration: InputDecoration(
+                  labelText: I18N.text('phone number'),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: TextField(
-                controller: _addressController,
+                controller: noteController,
                 decoration: InputDecoration(
-                  labelText: 'Address (optional)',
+                  labelText: I18N.text('address optional'),
                 ),
               ),
             ),
@@ -54,9 +72,9 @@ class _ShippingDetailsState extends State<ShippingDetails> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             child: TextField(
-              controller: _noteController,
+              controller: noteController,
               decoration: InputDecoration(
-                labelText: 'Note (optional)',
+                labelText: I18N.text('note optional'),
               ),
             ),
           ),
@@ -67,7 +85,13 @@ class _ShippingDetailsState extends State<ShippingDetails> {
               child: TextField(
                 enabled: false,
                 decoration: InputDecoration(
-                  labelText: 'City: Conakry',
+                  labelText: I18N.text('city') + ': Conakry',
+                  disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                      width: 0.1,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -75,13 +99,5 @@ class _ShippingDetailsState extends State<ShippingDetails> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _addressController.dispose();
-    super.dispose();
   }
 }
