@@ -120,7 +120,7 @@ class _SeafoodEntryState extends State<SeafoodEntry> {
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 19,
                                 ),
                               ),
                             ),

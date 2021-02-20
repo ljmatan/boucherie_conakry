@@ -1,5 +1,5 @@
 abstract class Values {
-  static final Map instance = {
+  static final Map instance = const {
     'en': {
       'view all': 'VIEW ALL',
       'categories': 'Categories',
@@ -86,7 +86,7 @@ abstract class Values {
       'total': 'Totale',
       'cancel': 'ANNULER',
       'confirm': 'CONFIRMER',
-      '4 to 8': 'For 4 to 8 people',
+      '4 to 8': 'Pour 4 à 8 personnes',
       'login': 'CONNEXION',
       'register': 'S\'INSCRIRE',
       'cart': 'Panier',

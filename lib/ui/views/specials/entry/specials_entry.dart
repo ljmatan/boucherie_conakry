@@ -171,8 +171,9 @@ class _SpecialsEntryState extends State<SpecialsEntry> {
           if (_formattedDescription != null)
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text('${I18N.text('prepared in restaurant')}, ' +
-                  _formattedDescription),
+              child: Text(
+                '${I18N.text('prepared in restaurant')}, $_formattedDescription',
+              ),
             ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),

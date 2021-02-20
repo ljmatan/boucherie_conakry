@@ -134,7 +134,7 @@ class _ButchersEntryState extends State<ButchersEntry> {
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 19,
                                 ),
                               ),
                             ),

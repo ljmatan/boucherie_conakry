@@ -79,7 +79,7 @@ class _SpecialsAddToCartState extends State<SpecialsAddToCart> {
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 19,
+                      fontSize: 23,
                     ),
                   ),
                 ),

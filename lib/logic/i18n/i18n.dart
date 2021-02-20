@@ -16,5 +16,5 @@ abstract class I18N {
     Prefs.instance.setString('locale', newLocale);
   }
 
-  static String text(String text) => Values.instance['fr'][text];
+  static String text(String text) => Values.instance['locale'][text];
 }
