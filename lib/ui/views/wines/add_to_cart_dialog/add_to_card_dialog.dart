@@ -53,12 +53,10 @@ class _WinesAddToCartDialogState extends State<WinesAddToCartDialog> {
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: kElevationToShadow[16],
-            borderRadius: BorderRadius.circular(6),
-          ),
+        child: Material(
+          elevation: 16,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
