@@ -125,7 +125,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                                   );
                                 } else if (mounted) {
                                   setState(() => _sending = false);
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  Scaffold.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         const JsonCodec()
@@ -137,7 +137,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                               } catch (e) {
                                 if (mounted) {
                                   setState(() => _sending = false);
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  Scaffold.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         e.toString(),

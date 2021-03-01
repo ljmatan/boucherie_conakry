@@ -159,21 +159,19 @@ class _LoginDisplayState extends State<LoginDisplay> {
                                             LoginSuccessDialog());
                                   } else {
                                     setState(() => _verifying = false);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(jsonDecode(
-                                                response.body)['message'])));
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text(jsonDecode(
+                                            response.body)['message'])));
                                   }
                                 } catch (e) {
                                   setState(() => _verifying = false);
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  Scaffold.of(context).showSnackBar(
                                       SnackBar(content: Text('$e')));
                                 }
                               } else
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(I18N
-                                            .text('please check your input'))));
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        I18N.text('please check your input'))));
                             },
                     ),
                   ],

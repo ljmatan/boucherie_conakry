@@ -141,17 +141,17 @@ class CheckoutActions extends StatelessWidget {
                       builder: (context) => PurchaseSuccessDialog(),
                     );
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text(jsonDecode(response.body)['message'])));
                     Navigator.pop(context);
                   }
                 } catch (e) {
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context)
+                  Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('$e')));
                 }
               } else
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(I18N.text('name or number missing'))));
             },
           ),
