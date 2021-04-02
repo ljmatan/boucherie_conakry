@@ -35,7 +35,7 @@ class CallButton extends StatelessWidget {
           if (await canLaunch('tel:' + _phoneNumber))
             launch('tel:' + _phoneNumber);
           else
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(_phoneNumber),
                 duration: const Duration(seconds: 6),

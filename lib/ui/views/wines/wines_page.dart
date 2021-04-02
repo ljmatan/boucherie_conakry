@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:boucherie_conakry/global/products.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/products_model.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
+import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'bloc/wines_filter_controller.dart';
 import 'wine_entry.dart';
 import 'filter_dialog/filter_dialog.dart';
@@ -31,7 +32,7 @@ class _WinesPageState extends State<WinesPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 12,
-        title: Text('Vins'),
+        title: Text(I18N.text('wines')),
         actions: [
           StreamBuilder(
             stream: _loadedController.stream,

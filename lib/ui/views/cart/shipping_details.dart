@@ -62,7 +62,7 @@ class ShippingDetails extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: TextField(
-                controller: noteController,
+                controller: addressController,
                 decoration: InputDecoration(
                   labelText: I18N.text('address optional'),
                 ),

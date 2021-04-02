@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 class UserModel {
-  final String firstName, lastName, number, username, email, address;
-  final int id;
+  String firstName, lastName, number, username, email, address;
+  int id;
 
   UserModel({
     @required this.firstName,

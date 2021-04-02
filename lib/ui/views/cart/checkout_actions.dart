@@ -82,7 +82,7 @@ class CheckoutActions extends StatelessWidget {
             onTap: () async {
               if (firstNameController.text.isNotEmpty &&
                   lastNameController.text.isNotEmpty &&
-                  RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)')
+                  RegExp(r'((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))')
                       .hasMatch(numberController.text)) {
                 FocusScope.of(context).unfocus();
                 showDialog(
@@ -141,17 +141,17 @@ class CheckoutActions extends StatelessWidget {
                       builder: (context) => PurchaseSuccessDialog(),
                     );
                   } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(jsonDecode(response.body)['message'])));
                     Navigator.pop(context);
                   }
                 } catch (e) {
                   Navigator.pop(context);
-                  Scaffold.of(context)
+                  ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('$e')));
                 }
               } else
-                Scaffold.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(I18N.text('name or number missing'))));
             },
           ),

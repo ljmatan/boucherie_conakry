@@ -1,4 +1,3 @@
-import 'logic/api/firebase/firebase.dart';
 import 'logic/i18n/locale_controller.dart';
 import 'logic/local_db/local_db.dart';
 import 'logic/cache/prefs.dart';

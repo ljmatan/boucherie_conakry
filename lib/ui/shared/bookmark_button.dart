@@ -35,7 +35,7 @@ class _BookmarkButtonState extends State<BookmarkButton>
     _bookmarked = !_bookmarked;
     _animationController.reset();
     _animationController.forward();
-    Prefs.instance.setBool(widget.id, _bookmarked ? true : null);
+    Prefs.instance.setBool(widget.id, _bookmarked ? true : false);
   }
 
   @override

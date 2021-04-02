@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:boucherie_conakry/logic/api/firebase/firebase.dart';
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
 import 'package:boucherie_conakry/logic/cache/prefs.dart';
+import 'package:boucherie_conakry/logic/html_parsing/string_processing.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'login_success_dialog.dart';
@@ -159,19 +160,23 @@ class _LoginDisplayState extends State<LoginDisplay> {
                                             LoginSuccessDialog());
                                   } else {
                                     setState(() => _verifying = false);
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                        content: Text(jsonDecode(
-                                            response.body)['message'])));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(StringProcessing
+                                                .removeAllHtmlTags(
+                                                    jsonDecode(response.body)[
+                                                        'message']))));
                                   }
                                 } catch (e) {
                                   setState(() => _verifying = false);
-                                  Scaffold.of(context).showSnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text('$e')));
                                 }
                               } else
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                        I18N.text('please check your input'))));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(I18N
+                                            .text('please check your input'))));
                             },
                     ),
                   ],

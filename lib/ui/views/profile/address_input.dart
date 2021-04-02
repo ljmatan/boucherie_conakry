@@ -1,4 +1,5 @@
 import 'package:boucherie_conakry/logic/cache/prefs.dart';
+import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:flutter/material.dart';
 
 class AddressInput extends StatefulWidget {
@@ -9,7 +10,8 @@ class AddressInput extends StatefulWidget {
 }
 
 class _AddressInputState extends State<AddressInput> {
-  final _addressController = TextEditingController();
+  final _addressController =
+      TextEditingController(text: Prefs.instance.getString('address') ?? '');
 
   bool _saved = false;
 
@@ -34,9 +36,11 @@ class _AddressInputState extends State<AddressInput> {
             ),
             onPressed: () async {
               if (_addressController.text.isNotEmpty) {
+                FocusScope.of(context).unfocus();
                 if (_saved) setState(() => _saved = false);
                 await Prefs.instance
                     .setString('address', _addressController.text);
+                UserData.instance.address = _addressController.text;
                 setState(() => _saved = true);
               }
             },

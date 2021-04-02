@@ -9,7 +9,7 @@ abstract class UserData {
     username: Prefs.instance.getString('username'),
     email: Prefs.instance.getString('email'),
     id: Prefs.instance.getInt('id'),
-    address: Prefs.instance.getString('address') ?? '',
+    address: Prefs.instance.getString('address'),
   );
 
   static UserModel get instance => _instance;
@@ -35,10 +35,12 @@ abstract class UserData {
 
     await Prefs.instance.setString('firstName', firstName);
     await Prefs.instance.setString('lastName', lastName);
-    await Prefs.instance.setString('phoneNumber', number);
+    await Prefs.instance.setString('phoneNumber', number ?? '');
     await Prefs.instance.setString('username', username);
     await Prefs.instance.setString('email', email);
     await Prefs.instance.setInt('id', id);
-    await Prefs.instance.setString('address', address);
+    await Prefs.instance.setString('address', address ?? '');
   }
+
+  static void clearInstance() => _instance = null;
 }

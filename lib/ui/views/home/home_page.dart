@@ -1,4 +1,3 @@
-import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 import 'package:boucherie_conakry/logic/local_db/local_db.dart';
 import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:boucherie_conakry/ui/views/cart/cart_page.dart';
@@ -44,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () async {
-                  if (UserData.instance.id == null)
+                  if (UserData.instance?.id == null)
                     showDialog(
                       context: context,
                       barrierColor: Colors.transparent,
@@ -53,9 +52,16 @@ class _HomePageState extends State<HomePage> {
                   else {
                     final List<Map> orders =
                         await LocalDB.instance.rawQuery('SELECT * FROM Orders');
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProfilePage(orders: orders)));
+                    final response = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ProfilePage(orders: orders)));
+                    if (response != null)
+                      showDialog(
+                        context: context,
+                        barrierColor: Colors.transparent,
+                        builder: (context) => AuthDialog(),
+                      );
                   }
                 },
               ),

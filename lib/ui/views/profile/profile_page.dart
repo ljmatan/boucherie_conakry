@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:boucherie_conakry/logic/cache/prefs.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
+import 'package:boucherie_conakry/logic/local_db/local_db.dart';
 import 'package:boucherie_conakry/logic/user/user_data.dart';
 import 'package:boucherie_conakry/ui/views/profile/address_input.dart';
 import 'package:boucherie_conakry/ui/views/profile/reset_password_button.dart';
@@ -26,8 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     for (var order in widget.orders) {
-      final String encoded = jsonDecode(order['orderJsonEncoded']);
-      _ordersDecoded.add(jsonDecode(encoded));
+      final String decoded = order['orderJsonEncoded'];
+      _ordersDecoded.add(jsonDecode(decoded));
     }
   }
 
@@ -50,6 +52,44 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: ListView(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: GestureDetector(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 48,
+                  child: Center(
+                    child: Text(
+                      I18N.text('logout'),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    barrierColor: Colors.transparent,
+                    barrierDismissible: false,
+                    builder: (context) =>
+                        Center(child: CircularProgressIndicator()));
+                for (var key in Prefs.instance.getKeys())
+                  await Prefs.instance.remove(key);
+                await LocalDB.instance.delete('Orders');
+                UserData.clearInstance();
+                Navigator.pop(context);
+                Navigator.pop(context, true);
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: ResetPasswordButton(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boucherie_conakry/logic/api/woocommerce/woocommerce.dart';
+import 'package:boucherie_conakry/logic/html_parsing/string_processing.dart';
 import 'package:boucherie_conakry/logic/i18n/i18n.dart';
 
 import 'reset_success_dialog.dart';
@@ -125,11 +126,11 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                                   );
                                 } else if (mounted) {
                                   setState(() => _sending = false);
-                                  Scaffold.of(context).showSnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        const JsonCodec()
-                                            .decode(response.body)['msg'],
+                                        StringProcessing.removeAllHtmlTags(
+                                            jsonDecode(response.body)['msg']),
                                       ),
                                     ),
                                   );
@@ -137,7 +138,7 @@ class _ForgotPasswordDisplayState extends State<ForgotPasswordDisplay> {
                               } catch (e) {
                                 if (mounted) {
                                   setState(() => _sending = false);
-                                  Scaffold.of(context).showSnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         e.toString(),
